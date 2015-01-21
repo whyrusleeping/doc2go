@@ -12,7 +12,7 @@ var templateStart = `package %s
 var %s = ` + "`"
 
 func convertName(name string) string {
-	name = strings.Replace(name, "/", "-", -1)
+	name = strings.Replace(name, "/", "_", -1)
 	name = strings.Replace(name, ".", "_", -1)
 	return strings.Title(name)
 }
