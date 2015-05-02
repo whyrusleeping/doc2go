@@ -23,8 +23,14 @@ func ConvertFile(in, out, pkg string) error {
 	defer ofi.Close()
 	defer infi.Close()
 
-	fmt.Fprintf(ofi, templateStart, pkg, convertName(in))
-	io.Copy(ofi, infi)
-	ofi.Write([]byte("`\n"))
-	return nil
+	_, err = fmt.Fprintf(ofi, templateStart, pkg, convertName(in))
+	if err != nil {
+		return err
+	}
+	_, err = io.Copy(ofi, infi)
+	if err != nil {
+		return err
+	}
+	_, err = ofi.Write([]byte("`\n"))
+	return err
 }
