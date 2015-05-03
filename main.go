@@ -5,12 +5,11 @@ import (
 )
 
 func main() {
-	input := flag.String("in", "", "specify input file")
-	output := flag.String("out", "", "specify output filename")
-	pkgname := flag.String("package", "", "specify package name for output")
+	input := flag.String("in", "", "specify input directory")
+	output := flag.String("out", ".", "specify output directory")
 	flag.Parse()
 
-	err := ConvertFile(*input, *output, *pkgname)
+	err := ConvertTree(input, output)
 	if err != nil {
 		panic(err)
 	}

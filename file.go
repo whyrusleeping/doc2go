@@ -6,31 +6,33 @@ import (
 	"os"
 )
 
-var templateStart = `package %s
+var fileTemplateStart = `package %s
 var %s = ` + "`"
 
-func ConvertFile(in, out, pkg string) error {
+func ConvertFile(in, out, pkg string) (variable string, err error) {
+	variable = convertName(in)
+
 	infi, err := os.Open(in)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	ofi, err := os.Create(out)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	defer ofi.Close()
 	defer infi.Close()
 
-	_, err = fmt.Fprintf(ofi, templateStart, pkg, convertName(in))
+	_, err = fmt.Fprintf(ofi, fileTemplateStart, pkg, variable)
 	if err != nil {
-		return err
+		return "", err
 	}
 	_, err = io.Copy(ofi, infi)
 	if err != nil {
-		return err
+		return "", err
 	}
 	_, err = ofi.Write([]byte("`\n"))
-	return err
+	return variable, err
 }
